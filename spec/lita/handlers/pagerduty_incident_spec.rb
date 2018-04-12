@@ -9,6 +9,10 @@ describe Lita::Handlers::PagerdutyIncident, lita_handler: true do
     is_expected.to route_command('pager incident ABC123').to(:incident)
   end
 
+  before do
+    Lita.config.handlers.pagerduty.escalation_policies = ['Escalation Policy 1', 'Escalation Policy 2']
+  end
+
   describe '#incidents_all' do
     describe 'when there are open incidents' do
       it 'shows a list of incidents' do

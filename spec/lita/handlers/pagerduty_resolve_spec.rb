@@ -8,6 +8,9 @@ describe Lita::Handlers::PagerdutyResolve, lita_handler: true do
     is_expected.to route_command('pager resolve mine').to(:resolve_mine)
     is_expected.to route_command('pager resolve ABC123').to(:resolve)
   end
+  before do
+    Lita.config.handlers.pagerduty.escalation_policies = ['Escalation Policy 1', 'Escalation Policy 2']
+  end
 
   describe '#resolve_all' do
     describe 'when there are resolvable incidents' do

@@ -9,6 +9,10 @@ describe Lita::Handlers::PagerdutyAck, lita_handler: true do
     is_expected.to route_command('pager ack ABC123').to(:ack)
   end
 
+  before do
+    Lita.config.handlers.pagerduty.escalation_policies = ['Escalation Policy 1', 'Escalation Policy 2']
+  end
+
   describe '#ack_all' do
     describe 'when there are acknowledgable incidents' do
       it 'shows them as acknowledged' do
