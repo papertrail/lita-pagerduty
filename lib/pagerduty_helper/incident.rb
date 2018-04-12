@@ -21,19 +21,21 @@ module PagerdutyHelper
       end
     end
 
-    def fetch_all_incidents
+    def fetch_all_incidents(escalation_filter)
       client = pd_client
       list = []
       # FIXME: Workaround on current PD Gem
       client.incidents.incidents.each do |incident|
-        list.push(incident) if incident.status != 'resolved'
+        if incident.status != 'resolved' && escalation_filter.include?(incident.escalation_policy)
+          list.push(incident)
+        end
       end
       list
     end
 
-    def fetch_my_incidents(email)
+    def fetch_my_incidents(email, escalation_filter)
       # FIXME: Workaround
-      incidents = fetch_all_incidents
+      incidents = fetch_all_incidents(escalation_filter)
       list = []
       incidents.each do |incident|
         list.push(incident) if incident.assigned_to_user.email == email
