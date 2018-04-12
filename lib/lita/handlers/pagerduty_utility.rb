@@ -8,6 +8,7 @@ module Lita
     class PagerdutyUtility < Handler
       config :api_key, required: true
       config :subdomain, required: true
+      config :escalation_policies, required: true
 
       namespace 'Pagerduty'
 
