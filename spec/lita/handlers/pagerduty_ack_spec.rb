@@ -30,6 +30,24 @@ describe Lita::Handlers::PagerdutyAck, lita_handler: true do
                                    'incidents')
       end
     end
+    
+    describe 'when no alerts match the Escalation Policies' do
+      it 'shows a warning' do
+        expect(Pagerduty).to receive(:new) { incidents_diff_policies }
+        send_command('pager ack all')
+        expect(replies.last).to eq('No triggered, open, or acknowledged ' \
+                                   'incidents')
+      end
+    end
+
+    describe 'when one Escalation Policy matches' do
+      it 'only acks matching escalation policy' do
+        expect(Pagerduty).to(receive(:new).twice { incidents_one_matching })
+        send_command('pager ack all')
+        expect(replies.last).to eq('Acknowledged: ABC123')
+      end
+    end
+
   end
 
   describe '#ack_mine' do
