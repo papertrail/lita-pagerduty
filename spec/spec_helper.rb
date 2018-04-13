@@ -62,7 +62,7 @@ RSpec.shared_context 'basic fixtures' do
             id: 'ABC123',
             status: 'resolved',
             html_url: 'https://acme.pagerduty.com/incidents/ABC123',
-            escalation_policy: 'Escalation Policy 1',
+            escalation_policy: double(name: 'Escalation Policy 1'),
             trigger_summary_data: double(subject: 'something broke'),
             assigned_to_user: double(email: 'foo@example.com')
           ),
@@ -70,7 +70,7 @@ RSpec.shared_context 'basic fixtures' do
             id: 'ABC789',
             status: 'triggered',
             html_url: 'https://acme.pagerduty.com/incidents/ABC789',
-            escalation_policy: 'Escalation Policy 1',
+            escalation_policy: double(name: 'Escalation Policy 1'),
             trigger_summary_data: double(subject: 'Still broke'),
             assigned_to_user: double(email: 'bar@example.com')
           )
@@ -81,7 +81,7 @@ RSpec.shared_context 'basic fixtures' do
       double(
         status: 'triggered',
         html_url: 'https://acme.pagerduty.com/incidents/ABC789',
-        escalation_policy: 'Escalation Policy 1',
+        escalation_policy: double(name: 'Escalation Policy 1'),
         trigger_summary_data: double(subject: 'Still broke'),
         assigned_to_user: double(email: 'bar@example.com'),
         acknowledge: { 'id' => 'ABC789', 'status' => 'acknowledged' },
@@ -101,7 +101,7 @@ RSpec.shared_context 'basic fixtures' do
             id: 'ABC123',
             status: 'triggered',
             html_url: 'https://acme.pagerduty.com/incidents/ABC123',
-            escalation_policy: 'Escalation Policy 1',
+            escalation_policy: double(name: 'Escalation Policy 1'),
             trigger_summary_data: double(subject: 'something broke'),
             assigned_to_user: double(email: 'foo@example.com')
           ),
@@ -109,7 +109,7 @@ RSpec.shared_context 'basic fixtures' do
             id: 'ABC789',
             status: 'triggered',
             html_url: 'https://acme.pagerduty.com/incidents/ABC789',
-            escalation_policy: 'Escalation Policy 3',
+            escalation_policy: double(name: 'Escalation Policy 3'),
             trigger_summary_data: double(subject: 'Still broke'),
             assigned_to_user: double(email: 'bar@example.com')
           )
@@ -120,7 +120,7 @@ RSpec.shared_context 'basic fixtures' do
       double(
         status: 'triggered',
         html_url: 'https://acme.pagerduty.com/incidents/ABC789',
-        escalation_policy: 'Escalation Policy 1',
+        escalation_policy: double(name: 'Escalation Policy 1'),
         trigger_summary_data: double(subject: 'Still broke'),
         assigned_to_user: double(email: 'bar@example.com'),
         acknowledge: { 'id' => 'ABC789', 'status' => 'acknowledged' },
@@ -140,7 +140,7 @@ RSpec.shared_context 'basic fixtures' do
             id: 'ABC123',
             status: 'resolved',
             html_url: 'https://acme.pagerduty.com/incidents/ABC123',
-            escalation_policy: 'Escalation Policy 3',
+            escalation_policy: double(name: 'Escalation Policy 3'),
             trigger_summary_data: double(subject: 'something broke'),
             assigned_to_user: double(email: 'foo@example.com')
           ),
@@ -148,7 +148,7 @@ RSpec.shared_context 'basic fixtures' do
             id: 'ABC789',
             status: 'triggered',
             html_url: 'https://acme.pagerduty.com/incidents/ABC789',
-            escalation_policy: 'Escalation Policy 4',
+            escalation_policy: double(name: 'Escalation Policy 4'),
             trigger_summary_data: double(subject: 'Still broke'),
             assigned_to_user: double(email: 'bar@example.com')
           )
@@ -159,7 +159,7 @@ RSpec.shared_context 'basic fixtures' do
       double(
         status: 'triggered',
         html_url: 'https://acme.pagerduty.com/incidents/ABC789',
-        escalation_policy: 'Escalation Policy 1',
+        escalation_policy: double(name: 'Escalation Policy 1'),
         trigger_summary_data: double(subject: 'Still broke'),
         assigned_to_user: double(email: 'bar@example.com'),
         acknowledge: { 'id' => 'ABC789', 'status' => 'acknowledged' },
@@ -177,7 +177,7 @@ RSpec.shared_context 'basic fixtures' do
         id: 'ABC123',
         status: 'triggered',
         html_url: 'https://acme.pagerduty.com/incidents/ABC123',
-        escalation_policy: 'Escalation Policy 1',
+        escalation_policy: double(name: 'Escalation Policy 1'),
         trigger_summary_data: double(subject: 'something broke'),
         assigned_to_user: double(email: 'foo@example.com'),
         acknowledge: { 'id' => 'ABC123', 'status' => 'acknowledged' },
@@ -195,7 +195,7 @@ RSpec.shared_context 'basic fixtures' do
         id: 'ABC456',
         status: 'triggered',
         html_url: 'https://acme.pagerduty.com/incidents/ABC456',
-        escalation_policy: 'Escalation Policy 1',
+        escalation_policy: double(name: 'Escalation Policy 1'),
         trigger_summary_data: double(subject: 'something broke'),
         assigned_to_user: nil
       )
@@ -209,7 +209,7 @@ RSpec.shared_context 'basic fixtures' do
       double(
         status: 'acknowledged',
         html_url: 'https://acme.pagerduty.com/incidents/ABC123',
-        escalation_policy: 'Escalation Policy 1',
+        escalation_policy: double(name: 'Escalation Policy 1'),
         trigger_summary_data: double(subject: 'something broke'),
         assigned_to_user: double(email: 'foo@example.com'),
         acknowledge: { 'error' =>

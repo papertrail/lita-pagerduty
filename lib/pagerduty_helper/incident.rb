@@ -26,8 +26,7 @@ module PagerdutyHelper
       list = []
       # FIXME: Workaround on current PD Gem
       client.incidents.incidents.each do |incident|
-        puts incident
-        if incident.status != 'resolved' && escalation_filter.include?(incident.escalation_policy)
+        if incident.status != 'resolved' && escalation_filter.include?(incident.escalation_policy.name)
           list.push(incident)
         end
       end
