@@ -8,6 +8,9 @@ describe Lita::Handlers::PagerdutyResolve, lita_handler: true do
     is_expected.to route_command('pager resolve mine').to(:resolve_mine)
     is_expected.to route_command('pager resolve ABC123').to(:resolve)
   end
+  before do
+    Lita.config.handlers.pagerduty.escalation_policies = ['Escalation Policy 1', 'Escalation Policy 2']
+  end
 
   describe '#resolve_all' do
     describe 'when there are resolvable incidents' do
@@ -24,6 +27,23 @@ describe Lita::Handlers::PagerdutyResolve, lita_handler: true do
         send_command('pager resolve all')
         expect(replies.last).to eq('No triggered, open, or acknowledged ' \
                                    'incidents')
+      end
+    end
+
+    describe 'when no alerts match the Escalation Policies' do
+      it 'shows a warning' do
+        expect(Pagerduty).to receive(:new) { incidents_diff_policies }
+        send_command('pager resolve all')
+        expect(replies.last).to eq('No triggered, open, or acknowledged ' \
+                                   'incidents')
+      end
+    end
+
+    describe 'when one Escalation Policy matches' do
+      it 'only acks matching escalation policy' do
+        expect(Pagerduty).to(receive(:new).twice { incidents_one_matching })
+        send_command('pager resolve all')
+        expect(replies.last).to eq('Resolved: ABC123')
       end
     end
   end

@@ -9,6 +9,10 @@ describe Lita::Handlers::PagerdutyIncident, lita_handler: true do
     is_expected.to route_command('pager incident ABC123').to(:incident)
   end
 
+  before do
+    Lita.config.handlers.pagerduty.escalation_policies = ['Escalation Policy 1', 'Escalation Policy 2']
+  end
+
   describe '#incidents_all' do
     describe 'when there are open incidents' do
       it 'shows a list of incidents' do
@@ -25,6 +29,24 @@ describe Lita::Handlers::PagerdutyIncident, lita_handler: true do
         send_command('pager incidents all')
         expect(replies.last).to eq('No triggered, open, or acknowledged ' \
                                    'incidents')
+      end
+    end
+
+    describe 'when no incidents match the Escalation Policies' do
+      it 'shows a warning' do
+        expect(Pagerduty).to receive(:new) { incidents_diff_policies }
+        send_command('pager incidents all')
+        expect(replies.last).to eq('No triggered, open, or acknowledged ' \
+                                   'incidents')
+      end
+    end
+
+    describe 'when one Escalation Policy matches' do
+      it 'only acks matching escalation policy' do
+        expect(Pagerduty).to(receive(:new) { incidents_one_matching })
+        send_command('pager incidents all')
+        expect(replies.last).to eq('ABC123: "something broke", assigned to: '\
+                                   'foo@example.com, url: https://acme.pagerduty.com/incidents/ABC123')
       end
     end
   end
