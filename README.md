@@ -26,6 +26,7 @@ Add the following variables to your Lita config file:
 ``` ruby
 config.handlers.pagerduty.api_key   = ''
 config.handlers.pagerduty.subdomain = ''
+config.handlers.pagerduty.escalation_policies = ['escalation policies', 'you want `all`', 'to filter by']
 ```
 
 ## Usage
@@ -33,7 +34,7 @@ config.handlers.pagerduty.subdomain = ''
 ### Specific incidents
 
 ```
-pager incidents all                - Show all open incidents
+pager incidents all                - Show all open incidents that match the escalation policies.
 pager incidents mine               - Show all open incidents assigned to me
 pager incident <incident ID>       - Show a specific incident
 ```
@@ -47,7 +48,7 @@ pager notes <incident ID>          - Show all notes for a specific incident
 ### Acknowledging an incident
 
 ```
-pager ack all                      - Acknowledge all triggered incidents
+pager ack all                      - Acknowledge all triggered incidents that match the escalation policies.
 pager ack mine                     - Acknowledge all triggered incidents assigned to me
 pager ack <incident ID>            - Acknowledge a specific incident
 ```
@@ -55,7 +56,7 @@ pager ack <incident ID>            - Acknowledge a specific incident
 ### Resolving an incident
 
 ```
-pager resolve all                  - Resolve all triggered incidents
+pager resolve all                  - Resolve all triggered incidents that match the escalation policies.
 pager resolve mine                 - Resolve all triggered incidents assigned to me
 pager resolve <incident ID>        - Resolve a specific incident
 ```

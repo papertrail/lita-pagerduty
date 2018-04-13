@@ -39,7 +39,7 @@ module Lita
 
       # rubocop:disable Metrics/AbcSize
       def ack_all(response)
-        incidents = fetch_all_incidents(config.escalation_policies)
+        incidents = fetch_filtered_incidents(config.escalation_policies)
         return response.reply(t('incident.none')) unless incidents.count > 0
         completed = []
         incidents.each do |incident|
@@ -54,7 +54,7 @@ module Lita
       def ack_mine(response)
         email = fetch_user(response.user)
         return response.reply(t('identify.missing')) unless email
-        incidents = fetch_my_incidents(email, config.escalation_policies)
+        incidents = fetch_my_incidents(email)
         return response.reply(t('incident.none_mine')) unless incidents.count > 0
         completed = []
         incidents.each do |incident|

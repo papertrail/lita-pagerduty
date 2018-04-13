@@ -38,7 +38,7 @@ module Lita
       )
 
       def incidents_all(response)
-        incidents = fetch_all_incidents(config.escalation_policies)
+        incidents = fetch_filtered_incidents(config.escalation_policies)
         return response.reply(t('incident.none')) unless incidents.count > 0
         incidents.each do |incident|
           response.reply(format_incident(incident))
@@ -48,7 +48,7 @@ module Lita
       def incidents_mine(response)
         email = fetch_user(response.user)
         return response.reply(t('identify.missing')) unless email
-        incidents = fetch_my_incidents(email, config.escalation_policies)
+        incidents = fetch_my_incidents(email)
         response.reply(t('incident.none_mine')) unless incidents.count > 0
         incidents.each do |incident|
           response.reply(format_incident(incident))
