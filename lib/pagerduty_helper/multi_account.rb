@@ -19,7 +19,7 @@ module PagerdutyHelper
         if results.nil?
           results = partial
         else
-          results.schedules = results.schedules + partial.schedules
+          results.schedules += partial.schedules
         end
       end
       results
@@ -58,23 +58,30 @@ module PagerdutyHelper
     # Should find it eventually
     def get_incident(*args)
       results = nil
-      @accounts.each do |name, client|
+      @accounts.each do |account|
+        name = account[:name]
+        client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain])
         partial = client.get_incident(*args)
         next if partial == 'No results'
         results = partial
+      end
+      if results.nil? 
+        results = 'No results'
       end
       results
     end
 
     def incidents
       results = nil
-      @accounts.each do |name, client|
+      @accounts.each do |account|
+        name = account[:name]
+        client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain])
         partial = client.incidents
         partial.incidents.each {|s| s.pd_account = name}
         if results.nil?
           results = partial
         else
-          results.incidents + partial.incidents
+          results.incidents += partial.incidents
         end
       end
       results
