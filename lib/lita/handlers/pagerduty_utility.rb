@@ -61,7 +61,7 @@ module Lita
       def on_call_list(response)
         schedules = pd_client.get_schedules.schedules
         if schedules.any?
-          schedule_list = schedules.map(&:name).join("\n")
+          schedule_list = schedules.map {|s| "#{s.name} - #{s.pd_account}"}.join("\n")
           response.reply(t('on_call_list.response', schedules: schedule_list))
         else
           response.reply(t('on_call_list.no_schedules_found'))

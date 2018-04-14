@@ -15,7 +15,7 @@ module PagerdutyHelper
         name = account[:name]
         client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain])
         partial = client.get_schedules
-        partial.schedules.each {|s| s.pd_account = name; puts s.name}
+        partial.schedules.each { |s| s.pd_account = name }
         if results.nil?
           results = partial
         else
