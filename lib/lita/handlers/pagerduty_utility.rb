@@ -71,16 +71,19 @@ module Lita
       # rubocop:disable Metrics/AbcSize
       def on_call_lookup(response)
         schedule_name = response.match_data[1].strip
-        schedule = pd_client.get_schedules.schedules.find { |s| s.name.casecmp(schedule_name).zero? }
+        schedules = pd_client.get_schedules.schedules.select { |s| s.name.casecmp(schedule_name).zero? }
 
-        unless schedule
+        if schedules.count == 0
           return response.reply(t('on_call_lookup.no_matching_schedule', schedule_name: schedule_name))
         end
 
-        if (user = lookup_on_call_user(schedule.id))
-          response.reply(t('on_call_lookup.response', name: user.name, email: user.email, schedule_name: schedule_name))
-        else
-          response.reply(t('on_call_lookup.no_one_on_call', schedule_name: schedule_name))
+        schedules.each do |s|
+          name_w_account = "#{schedule_name} - #{s.pd_account}"
+          if (user = lookup_on_call_user(s))
+            response.reply(t('on_call_lookup.response', name: user.name, email: user.email, schedule_name: name_w_account))
+          else
+            response.reply(t('on_call_lookup.no_one_on_call', schedule_name: name_w_account))
+          end
         end
       end
       # rubocop:enable Metrics/AbcSize
@@ -121,13 +124,14 @@ module Lita
 
       private
 
-      def lookup_on_call_user(schedule_id)
+      def lookup_on_call_user(schedule)
         now = ::Time.now.utc
         pd_client.get_schedule_users(
-          id: schedule_id,
+          id: schedule.id,
+          account: schedule.pd_account,
           since: now.iso8601,
           until: (now + 3600).iso8601
-        ).first
+        )
       end
     end
 

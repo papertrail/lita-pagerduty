@@ -27,8 +27,9 @@ module PagerdutyHelper
 
     def get_users(*args)
       results = nil
-      @accounts.each do |name, client|
-        partial = client.get_users(*args)
+      @accounts.each do |account|
+        name = account[:name]
+        client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain])
         if results.nil?
           results = partial
         else
@@ -38,12 +39,14 @@ module PagerdutyHelper
       results.uniq
     end
 
-    def get_schedule_users(*args)
-      results = []
-      @accounts.each do |name, client|
-        partial = client.get_schedule_users(*args).first
-        partial.account_name = name
-        results << partial
+    def get_schedule_users(options)
+      results = nil
+      @accounts.each do |account|
+        name = account[:name]
+        next if name != options[:account]
+        # Will only run once, looping for the output is done in the caller
+        client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain]) 
+        results = client.get_schedule_users(options).first
       end
       results
     end

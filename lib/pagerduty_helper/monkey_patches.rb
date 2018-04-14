@@ -16,11 +16,3 @@ class Pagerduty
     end
   end
 end
-
-class Pagerduty
-  class Users
-    class User
-      attr_accessor :pd_account
-    end
-  end
-end
