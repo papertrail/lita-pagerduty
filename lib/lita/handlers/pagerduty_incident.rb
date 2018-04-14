@@ -38,7 +38,7 @@ module Lita
       )
 
       def incidents_all(response)
-        incidents = fetch_all_incidents
+        incidents = fetch_filtered_incidents(config.escalation_policies)
         return response.reply(t('incident.none')) unless incidents.count > 0
         incidents.each do |incident|
           response.reply(format_incident(incident))

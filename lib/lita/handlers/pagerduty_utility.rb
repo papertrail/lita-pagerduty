@@ -6,8 +6,8 @@ module Lita
   module Handlers
     # Utility-ish routes
     class PagerdutyUtility < Handler
-
       config :accounts, required: true
+      config :escalation_policies, required: true
 
       namespace 'Pagerduty'
 
