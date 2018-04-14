@@ -25,18 +25,17 @@ module PagerdutyHelper
       results
     end
 
-    def get_users(*args)
+    def get_users(options)
       results = nil
+      pd_account = options.delete(:account)
       @accounts.each do |account|
         name = account[:name]
+        next if name != pd_account
+        # Will only run once, looping for the output is done in the caller
         client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain])
-        if results.nil?
-          results = partial
-        else
-          results + partial
-        end
+        results = client.get_users(options)
       end
-      results.uniq
+      results
     end
 
     def get_schedule_users(options)
@@ -51,8 +50,17 @@ module PagerdutyHelper
       results
     end
 
-    def create_schedule_override
-      nil
+    def create_schedule_override(options)
+      results = nil
+      pd_account = options.delete(:account)
+      @accounts.each do |account|
+        name = account[:name]
+        next if name != pd_account
+        # Will only run once, looping for the output is done in the caller
+        client = ::Pagerduty.new(token: account[:api_key], subdomain: account[:subdomain]) 
+        results = client.create_schedule_override(options)
+      end
+      results
     end
 
     # Should find it eventually

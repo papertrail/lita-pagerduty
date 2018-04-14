@@ -27,12 +27,13 @@ module PagerdutyHelper
       "email_#{user.id}"
     end
 
-    def take_pager(schedule_id, user_id, duration_mins)
+    def take_pager(schedule, user_id, duration_mins)
       from = ::Time.now.utc + 10
       to = from + (60 * duration_mins)
 
       pd_client.create_schedule_override(
-        id: schedule_id,
+        account: schedule.pd_account,
+        id: schedule.id,
         override: {
           user_id: user_id,
           start: from.iso8601,

@@ -87,5 +87,5 @@ en:
           no_matching_schedule: "No matching schedules found for '%{schedule_name}'" 
           no_one_on_call: "No one is currently on call for %{schedule_name}"
         pager_me:
-          success: "%{name} (%{email}) is now on call until %{finish}"
+          success: "%{name} (%{email}) is now on call until %{finish} (Account: %{account})"
           failure: "failed to take the pager"

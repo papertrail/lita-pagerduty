@@ -91,19 +91,26 @@ module Lita
       # rubocop:disable Metrics/AbcSize
       def pager_me(response)
         schedule_name = response.match_data[1].strip
-        schedule = pd_client.get_schedules.schedules.find { |s| s.name.casecmp(schedule_name).zero? }
-        return response.reply(t('on_call_lookup.no_matching_schedule', schedule_name: schedule_name)) unless schedule
 
+        schedules = pd_client.get_schedules.schedules.select { |s| s.name.casecmp(schedule_name).zero? }
+
+        if schedules.count == 0
+          return response.reply(t('on_call_lookup.no_matching_schedule', schedule_name: schedule_name))
+        end
+       
         email = fetch_user(response.user)
         return response.reply(t('identify.missing')) unless email
 
-        users = pd_client.get_users(query: email)
-        return response.reply(t('identify.unrecognised')) unless users.total == 1
+        schedules.each do |s|
+          name_w_account = "#{schedule_name} - #{s.pd_account}"
+          users = pd_client.get_users(query: email, account: s.pd_account)
+          return response.reply(t('identify.unrecognised')) unless users.total == 1
 
-        override = take_pager(schedule.id, users.users.first.id, response.match_data[2].strip.to_i)
-        return response.reply(t('pager_me.failure')) unless override
+          override = take_pager(s, users.users.first.id, response.match_data[2].strip.to_i)
+          return response.reply(t('pager_me.failure')) unless override
 
-        response.reply(t('pager_me.success', name: override.user.name, email: override.user.email, finish: override.end))
+          response.reply(t('pager_me.success', name: override.user.name, email: override.user.email, finish: override.end, account: s.pd_account))
+        end
       end
       # rubocop:enable Metrics/AbcSize
 
