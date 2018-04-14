@@ -24,8 +24,9 @@ Create a PagerDuty api Key(v1 legacy) You will need to give it FullAccess to upd
 Add the following variables to your Lita config file:
 
 ``` ruby
-config.handlers.pagerduty.api_key   = ''
-config.handlers.pagerduty.subdomain = ''
+config.handlers.pagerduty.accounts = [
+  {name: 'account', api_key: 'a_v1-key', subdomain: 'subdomain'},
+]
 ```
 
 ## Usage
