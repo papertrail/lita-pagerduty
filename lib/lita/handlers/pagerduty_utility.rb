@@ -6,8 +6,8 @@ module Lita
   module Handlers
     # Utility-ish routes
     class PagerdutyUtility < Handler
-      config :api_key, required: true
-      config :subdomain, required: true
+
+      config :accounts, required: true
 
       namespace 'Pagerduty'
 

@@ -6,6 +6,8 @@ Lita.load_locales Dir[File.expand_path(
 
 require 'pagerduty'
 
+require 'pagerduty_helper/monkey_patches'
+require 'pagerduty_helper/multi_account'
 require 'pagerduty_helper/incident'
 require 'pagerduty_helper/regex'
 require 'pagerduty_helper/utility'

@@ -3,7 +3,8 @@ module PagerdutyHelper
   # Utility functions
   module Utility
     def pd_client
-      ::Pagerduty.new(token: config.api_key, subdomain: config.subdomain)
+      @shim_client ||= MultiAccountShim.new(config.accounts)
+      @shim_client
     end
 
     def format_note(incident, note)
